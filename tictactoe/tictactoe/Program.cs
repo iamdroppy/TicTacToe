@@ -16,12 +16,14 @@ namespace tictactoe
                 {'4', '5', '6' },
                 {'7', '8', '9' }
         };
+        static int turns = 0;
 
         static void Main(string[] args)
         {
             int player = 2;
             int input = 0;
             bool inputCorrect = true;
+
 
 
             SetField();
@@ -42,6 +44,7 @@ namespace tictactoe
                     EnterXO(player, input);
                 }
                 SetField();
+
                 #region
                 //check win con
                 char[] playerChars = { 'x', 'O' };
@@ -52,7 +55,7 @@ namespace tictactoe
                         || ((playField[2, 0] == playerChar) && (playField[2, 1] == playerChar) && (playField[2, 2] == playerChar))
                         || ((playField[0, 0] == playerChar) && (playField[1, 0] == playerChar) && (playField[2, 0] == playerChar))
                         || ((playField[0, 1] == playerChar) && (playField[1, 1] == playerChar) && (playField[2, 1] == playerChar))
-                        || ((playField[0, 2] == playerChar) && (playField[1, 2] == playerChar) && (playField[2, 2] == playerChar))
+                        || ((playField[0, 2] == playerChar) && (playField[2, 1] == playerChar) && (playField[2, 2] == playerChar))
                         || ((playField[0, 0] == playerChar) && (playField[1, 1] == playerChar) && (playField[2, 2] == playerChar))
                         || ((playField[0, 2] == playerChar) && (playField[1, 1] == playerChar) && (playField[2, 0] == playerChar)))
 
@@ -60,14 +63,31 @@ namespace tictactoe
                         if(playerChar == 'X')
                         {
                             Console.WriteLine("\nPlayer 2 Winner Winner");
+                            Console.WriteLine("Press any key to restart");
+                            Console.ReadKey();
+                            player = 1;
+                            ResetField();
+                            
+
                         }
                         else
                         {
                             Console.WriteLine("\nPlayer 1 Winner Winner");
+                            Console.WriteLine("Press any key to restart");
+                            Console.ReadKey();
+                            player = 1;
+                            ResetField();
+                            
                         }
 
 
                         break;
+                    }
+                    else if(turns == 10)
+                    {
+                        Console.WriteLine("Players have drawn, press any key to restart");
+                        Console.ReadKey();
+                        ResetField();
                     }
                     
                 }
@@ -115,6 +135,13 @@ namespace tictactoe
 
         }
 
+        public static void ResetField()
+        {
+            playField = playFieldBegin;            
+            SetField();
+            turns = 0;
+        }
+
         public static void SetField()
         {
             Console.Clear();
@@ -126,6 +153,7 @@ namespace tictactoe
             Console.WriteLine("____|____|____");
             Console.WriteLine("    |    |    ");
             Console.WriteLine("  {0} | {1}  | {2}", playField[2,0], playField[2,1], playField[2,2]);
+            turns++;
         }
 
         public static void EnterXO(int player, int input)
